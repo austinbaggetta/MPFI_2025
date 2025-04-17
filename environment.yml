@@ -1,25 +1,21 @@
 name: mpfi
 channels:
-  - https://repo.anaconda.com/pkgs/main
-  - https://repo.anaconda.com/pkgs/r
+  - conda-forge
 dependencies:
   - xarray
   - numpy
   - scipy
   - plotly
   - pandas
-  - pingouin
   - natsort
   - tqdm
-  - ipykernel
+  - jupyter
   - yaml
   - scikit-image
   - netcdf4
-  - h5netcdf
   - nbformat=5.10.4
   - pyarrow
-  - conda-forge::python-kaleido
+  - python-kaleido
   - ipywidgets
-  - jupyter
   - dask
-  - zarr=3.0.6
+  - zarr>=3.0.6
