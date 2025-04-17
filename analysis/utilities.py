@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import xarray as xr
 from os.path import isdir
 from os.path import join as pjoin
@@ -29,7 +30,7 @@ def open_minian(dpath, post_process=None, return_dict=False):
     return ds
 
 
-def custom_graph_template(x_title, y_title, template='simple_white', height=500, width=500, linewidth=1.5,
+def fig_template(x_title, y_title, template='simple_white', height=500, width=500, linewidth=1.5,
                           titles=[''], rows=1, columns=1, shared_y=False, shared_x=False, font_size=22, font_family='Arial', **kwargs):
     """
     Used to make a cohesive graph type. In most functions, these arguments are supplied through **kwargs.
@@ -49,3 +50,16 @@ def custom_graph_template(x_title, y_title, template='simple_white', height=500,
     if shared_y:
         fig.update_yaxes(matches='y')
     return fig
+
+
+def bin_activity(data, bin_size_seconds, fps=30, func=np.mean, threshold=None):
+    if type(data) is not np.ndarray:
+        data = np.asarray(data)
+    samples = bin_size_seconds * fps
+    bins = np.arange(samples, data.shape[1], samples).astype(int)
+    binned = np.split(data, bins, axis=1)
+    if threshold is not None:
+        act = [func(bin > threshold, axis=1) for bin in binned]
+    else:
+        act = [func(bin, axis=1) for bin in binned]
+    return np.vstack(act).T 
